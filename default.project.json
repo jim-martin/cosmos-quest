@@ -1,0 +1,23 @@
+{
+    "name": "CosmosQuest",
+    "tree": {
+        "$className": "DataModel",
+        "ReplicatedStorage": {
+            "$className": "ReplicatedStorage",
+            "TerrainEngine": {
+                "$path": "src/ReplicatedStorage/TerrainEngine"
+            }
+        },
+        "ServerScriptService": {
+            "$className": "ServerScriptService",
+            "$path": "src/ServerScriptService"
+        },
+        "StarterPlayer": {
+            "$className": "StarterPlayer",
+            "StarterPlayerScripts": {
+                "$className": "StarterPlayerScripts",
+                "$path": "src/StarterPlayer/StarterPlayerScripts"
+            }
+        }
+    }
+}'
