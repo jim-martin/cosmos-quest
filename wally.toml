@@ -1,0 +1,9 @@
+[package]
+name = "starforge-studios/cosmos-quest"
+version = "0.14.2"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+Promise = "evaera/promise@4.0.0"
+Signal = "stravant/goodsignal@0.1.0"
