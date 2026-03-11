@@ -14,6 +14,7 @@ function TerrainGenerator.new(config)
     self.renderDistance = config.renderDistance or 256
     self.heightScale = config.heightScale or 48
     self.biomeMap = config.biomeMap or require(script.Parent.BiomeMap)
+    self.blendWidth = config.blendWidth or 8  -- edge blend width in studs
     return self
 end
 
@@ -23,12 +24,17 @@ function TerrainGenerator:generateChunk(cx, cz)
         Vector3.new(cx * self.chunkSize, -self.heightScale, cz * self.chunkSize),
         Vector3.new((cx + 1) * self.chunkSize, self.heightScale * 2, (cz + 1) * self.chunkSize)
     )
-    -- Perlin noise based heightmap
+    -- Perlin noise based heightmap with edge blending
     for x = 0, self.chunkSize - 1, 4 do
         for z = 0, self.chunkSize - 1, 4 do
             local wx = cx * self.chunkSize + x
             local wz = cz * self.chunkSize + z
             local height = self:_sampleHeight(wx, wz)
+            
+            -- Apply edge falloff to eliminate seam artifacts between chunks
+            local falloff = self:_getEdgeFalloff(x, z, self.chunkSize)
+            height = height * falloff + self.heightScale * (1 - falloff)
+            
             local material = self.biomeMap:getMaterial(wx, wz, height)
             terrain:FillBlock(
                 CFrame.new(wx, height / 2, wz),
@@ -51,7 +57,7 @@ function TerrainGenerator:_getEdgeFalloff(x, z, chunkSize)
         math.min(x, chunkSize - x),
         math.min(z, chunkSize - z)
     )
-    return math.clamp(edgeDist / 8, 0, 1)
+    return math.clamp(edgeDist / self.blendWidth, 0, 1)
 end
 
 return TerrainGenerator
